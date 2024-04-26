@@ -1,0 +1,70 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-theme="dracula">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Page{% endblock %} — DEVBLOGX86</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <link href="/static/django_ckeditor_5/dist/styles.css" media="all" rel="stylesheet">
+    <script src="/static/django_ckeditor_5/dist/bundle.js"></script>
+
+    <link rel="stylesheet" href="{% static 'module/magiczoom/magiczoom.css' %}">
+    <script src="{% static 'module/magiczoom/magiczoom.js' %}"></script>
+    
+  </head>
+  <body>
+
+    {% if user.is_superuser %}
+    <a href="/admin" class="btn btn-primary">Admin</a>
+    {% endif %}
+
+    {% include '_include_blocks/_nav_block.html' %}
+
+
+    {% if messages %}
+    <div class="toast toast-end">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert" >
+                {% if message.tags == 'info' %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                {% elif message.tags == 'success' %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                {% elif message.tags == 'warning' %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                {% elif message.tags == 'error' %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                {% endif %}
+          <span>{{ message }}</span>
+            <button class="btn btn-ghost btn-sm btn-circle" onclick="this.parentElement.remove()">✕</button>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <div class="container mx-auto">
+      {% if breadcrumbs %}
+      <div class="text-sm breadcrumbs mt-4">
+        <ul>
+          <li><a href="{% url 'main:index' %}" style="text-decoration: none;"><i class="fas fa-home mr-1"></i></a></li>
+          {% for url, key in breadcrumbs.items %}
+            {% if url == "current" %}
+              <li class="text-gray-400">{{ key }}</li>
+            {% else %}
+              <li><a href="{{url}}">{{ key  }}</a></li>
+            {% endif %}
+          {% endfor %}
+          
+        </ul>
+      </div>
+      {% endif %}
+    {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

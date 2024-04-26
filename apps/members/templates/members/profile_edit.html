@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit Profile {% endblock %}
+
+{% block content %}
+    <div class="flex justify-center items-center my-10 ">
+        <div class="bg-base-200 p-10 rounded-box">
+            <form action="{% url 'members:profile_edit' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 gap-6">
+
+                    <div class="form-control">
+                      <label class="label">
+                        <span class="label-text">Photo</span>
+                      </label>
+                      <input type="file" name="avatar" class="file-input file-input-bordered file-input-accent  w-full max-w-xs" placeholder="Image">
+                    </div>
+
+                    {{form.bio}}
+
+                  <button class="btn btn-primary">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+  
