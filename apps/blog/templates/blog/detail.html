@@ -8,8 +8,8 @@
     <h1 class="text-3xl font-bold mb-4">{{ post.title }}</h1>
     {% if post.author == user %}
     <div class="my-4 border-b-2 border-gray-200 p-4">
-        <a onclick="my_modal_4.showModal()" class="btn btn-outline btn-info">Редагувати</a>
-        <a onclick="delete_post.showModal()" class="btn btn-outline btn-error">Видалити</a>
+        <a onclick="my_modal_4.showModal()" class="btn btn-outline btn-info">Edit</a>
+        <a onclick="delete_post.showModal()" class="btn btn-outline btn-error">Delete</a>
     </div>
     {% endif %}
     <a href="{% url 'members:profile' post.author.profile.id %}">
@@ -29,7 +29,7 @@
         {{ post.content }}
         {% endautoescape %}
       </div>
-    <a href="{% url 'blog:index' %}" class="btn btn-sm btn-outline btn-error">Назад</a>
+    <a href="{% url 'blog:index' %}" class="btn btn-sm btn-outline btn-error">Back</a>
     
     <hr class="my-4">
     <h3 class="text-2xl font-bold mb-4">Comments</h3>
@@ -39,7 +39,7 @@
             <div class="form-control">
                 <textarea class="textarea textarea-bordered textarea-default text-2xl" name="content" placeholder="Коментар" rows="3"></textarea>
             </div>
-            <button class="btn btn-outline btn-accent">Коментувати</button>
+            <button class="btn btn-outline btn-accent">Comment</button>
         </div>
     </form>
     <div class="grid grid-cols-1 gap-6 mt-4">
@@ -48,7 +48,8 @@
             <p class="text-gray-500 mb-4">Author: {{ comment.author }}</p>
             <p class="text-gray-500 mb-4">Created: {{ comment.created_at|timesince }} тому</p>
             <p>{{ comment.content }}</p>
-            <button id="like_{{comment.id}}" onclick='like({{comment.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-heart {%if user in comment.like %}text-red-500{%else%}text-white{%endif%}"></i>{{ comment.like.count }}</button>
+            <button id="like_{{comment.id}}" onclick='like({{comment.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-thumbs-up {%if user in comment.like %}text-red-500{%else%}text-white{%endif%}"></i>{{ comment.like.count }}</button>
+            <button id="dislike_{{comment.id}}" onclick='dislike({{comment.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-thumbs-down {%if user in comment.like %}text-gray-500{%else%}text-white{%endif%}"></i>{{ comment.dislike.count }}</button>
         </div>
         {% endfor %}
     </div>
@@ -109,7 +110,7 @@
                     <span class="label-text">Are you sure you want to delete this post?</span>
                     </label>
                 </div>
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-outline btn-error">Delete</button>
                 </div>
             </form>
         </div>
@@ -117,6 +118,25 @@
 
 
 
+        <script>
+          function dislike(id) {
+            fetch(`/blog/dislike_comment/${id}`, {
+              method: 'GET',
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if(data.user_dislike){
+                document.getElementById(`dislike_${id}`).innerHTML = `<i class="fa fa-thumbs-down text-gray-500"></i> ${data.dislike_count}`;
+                }else{
+                  document.getElementById(`dislike_${id}`).innerHTML = `<i class="fa fa-thumbs-down text-white"></i> ${data.dislike_count}`;
+                }
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+                  // Redirect to the login page
+                //window.location.href = "{% url 'members:login' %}";
+              })}
+            </script>
 
         <script>
           function like(id) {
@@ -126,9 +146,9 @@
               .then((res) => res.json())
               .then((data) => {
                 if(data.user_like){
-                document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-heart text-red-500"></i> ${data.like_count}`;
+                document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-thumbs-up text-red-500"></i> ${data.like_count}`;
                 }else{
-                  document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-heart text-white"></i> ${data.like_count}`;
+                  document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-thumbs-up text-white"></i> ${data.like_count}`;
                 }
               })
               .catch((error) => {

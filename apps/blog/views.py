@@ -28,9 +28,10 @@ def index(request):
     paginator = Paginator(all_posts, 3)
     page = request.GET.get('page')
     all_posts_page = paginator.get_page(page)
-
+    post_count = all_posts.count()
     
     context = {
+        'post_count': post_count,
         'all_posts': all_posts_page,
         'created_form': PostForm(),
     }
@@ -41,7 +42,7 @@ def index(request):
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     
-    post = Post.objects.prefetch_related('comments').prefetch_related('comments__author').prefetch_related('comments__like').get(pk=post_id)
+    post = Post.objects.prefetch_related('comments').prefetch_related('comments__author').prefetch_related('comments__like').prefetch_related('comments__dislike').get(pk=post_id)
     update_form = PostForm(instance=post)
     context = {
         'post': post,
@@ -104,6 +105,17 @@ def like_view(request, post_id):
         
         return JsonResponse( {'like_count': post.like.count(), 'user_like': user_like} )
 
+@login_required
+def dislike_view(request, post_id):
+    if request.method == 'GET':
+        post = get_object_or_404(Post, pk=post_id)
+        if request.user in post.dislike.all():
+            post.dislike.remove(request.user)
+            user_dislike = False
+        else:
+            post.dislike.add(request.user)
+            user_dislike = True
+        return JsonResponse( {'dislike_count': post.dislike.count(), 'user_dislike': user_dislike} )
 
 @login_required
 def like_comment_view(request, comment_id):
@@ -114,9 +126,23 @@ def like_comment_view(request, comment_id):
             user_like = False
         else:
             comment.like.add(request.user)
+            comment.dislike.remove(request.user)
             user_like = True
         return JsonResponse( {'like_count': comment.like.count(), 'user_like': user_like} )
-    
+
+@login_required
+def dislike_comment_view(request, comment_id):
+    if request.method == 'GET':
+        comment = get_object_or_404(Comment, pk=comment_id)
+        if request.user in comment.dislike.all():
+            comment.dislike.remove(request.user)
+            user_dislike = False
+        else:
+            comment.dislike.add(request.user)
+            comment.like.remove(request.user)
+            user_dislike = True
+        return JsonResponse( {'dislike_count': comment.dislike.count(), 'user_dislike': user_dislike} )
+
 @login_required
 def comment_view(request, post_id):
     if request.method == 'POST':
