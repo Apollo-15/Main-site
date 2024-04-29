@@ -12,6 +12,7 @@
       
     <h1 class = "text-3xl font-bold mb-4">Posts</h1>
     <h1 class = "text-1xl font-bold mb-5">Posts count: {{ post_count }} </h1>
+    <a onclick="my_modal_4.showModal()" class="btn btn-outline btn-success btn-xs" >Create Post</a>
     <div class="flex justify-between ">
     <form method="get" action="{% url 'blog:search' %}">
       <div class="label">
@@ -19,7 +20,7 @@
       </div>
       <label class="input input-bordered flex items-center gap-2">
         <input name="q" type="text" class="grow" placeholder="Search" value="{{ request.GET.q }}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
       </label>
     </form>
     <form method="get" action="{% url 'blog:index' %}" class="flex gap-4">
