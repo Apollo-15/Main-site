@@ -1,32 +1,71 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} Profile {% endblock %}
 
 {% block content %}
-    <div class="flex my-10 align-items-center gap-10 align-items-center justify-center">
-        <div class="w-1/3 bg-base-200 p-10 rounded-box ">
-            <h1 class="text-3xl font-bold mb-4">Profile</h1>
-            <img src="{{ profile.get_avatar }}" alt="avatar" width="100%" class="rounded-full mb-4">
-            <p class="text-gray-500 mb-4">Username: {{ profile.user.username }}</p>
-            <p class="text-gray-500 mb-4">Email: {{ profile.user.email }}</p>
-            {% if is_owner %}
-            <a href="{% url 'members:logout' %}" class="btn btn-primary">Logout</a>
-            <a href="{% url 'members:profile_edit' %}" class="btn btn-secondary">Edit Profile</a>
-            {% else %}
-              {% if is_following %}
-                <a href="{% url 'members:follow'  profile.id %}" class="btn btn-accent">Unfollow</a>
-              {% else %}
-                <a href="{% url 'members:follow'  profile.id %}" class="btn btn-primary">Follow</a>
-              {% endif %}
-            {% endif %}
+<div class="flex flex-col my-10 align-items-center my-4 rounded-lg p-9 " style="background-color: rgba(0, 0, 0, 0.7);">
+  <style>
+      body {
+          background-image: url("{% static 'rdr2_bg2.jpg' %}");
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+
+      }
+
+    .text-large {
+      font-size: 20px;
+    }
+    .text-medium {
+      font-size: 18px;
+    }
+    .text-small {
+      font-size: 14px;
+    }
+    .text-tiny {
+      font-size: 12px;
+    }
+    .text-xsmall {
+      font-size: 10px;
+    }
+    .text-xxsmall {
+      font-size: 8px;
+    }
+    .btn-left {
+      float: left;
+    }
+    .btn-right {
+      float: right;
+    }
+  </style>
+    <div class="bg-base-200 p-10 square-box ">
+      <div class="flex items-center gap-4 mb-4">
+        <img src="{{ profile.get_avatar }}" alt="avatar" width="100px">
+        <p class="text-white text-large">{{ profile.user.username }}</p>
+      </div>
+      <div class="mt-4">
+          {% comment %} <h2 class="text-2xl font-bold mb-4">Description</h2> {% endcomment %}
+          <p class="text-gray-500 mb-4">{{ profile.bio|safe }}</p>
+      </div>
+        {% comment %} <p class="text-gray-500 mb-4">Email: {{ profile.user.email }}</p> {% endcomment %}
+        {% if is_owner %}
+        {% comment %} <a href="{% url 'members:logout' %}" class="btn btn-error btn-outline">Logout</a> {% endcomment %}
+        <div class="bg-base-00 p-10 rounded-box ">
+          <div class="btn-right gap-4 mb-4">
+            <p class="text-gray-500 text-small">You can feature one of your Badges here. Select one from your edit profile page.</p>
+            <a href="{% url 'members:profile_edit' %}" class="btn btn-info btn-outline btn-right">Edit Profile</a>
+            </div>
         </div>
-        <div class="w-2/3 ">
-          <div class="bg-base-200 p-10 rounded-box mb-4">
-            <h1 class="text-3xl font-bold mb-4">біографія</h1>
-            <p class="text-gray-500 mb-4">{{ profile.bio|safe }}</p>
-          </div>
-          <div class="bg-base-200 p-10 rounded-box">
-            <h1 class="text-3xl font-bold mb-4">Followers</h1>
+        {% else %}
+          {% if is_following %}
+            <a href="{% url 'members:follow'  profile.id %}" class="btn btn-accent">Unfollow</a>
+          {% else %}
+            <a href="{% url 'members:follow'  profile.id %}" class="btn btn-primary">Follow</a>
+          {% endif %}
+        {% endif %}
+        <div class="mt-4">
+            <h2 class="text-2xl font-bold mb-4">Followers</h2>
 
               <div class="flex items-center space-x-4">
                 {% if followers.count == 0 %}
@@ -72,7 +111,7 @@
     <div class=" bg-base-200 p-10 rounded-box">
         <h1 class="text-3xl font-bold mb-4">Posts</h1>
         {% if is_owner %}
-        <a onclick="my_modal_4.showModal()" class="btn btn-primary">Create Post</a>
+        <a onclick="my_modal_4.showModal()" class="btn btn-outline btn-info">Create Post</a>
 
         {% endif %}
         <div class="grid grid-cols-3 gap-7">
@@ -88,7 +127,7 @@
           <a href="?page={{ posts.previous_page_number }}" class="join-item btn">Page {{ posts.previous_page_number }}</a>
           {% endif %}
     
-          <button class="join-item btn btn-primary">Page {{ posts.number }}</button>
+          <button class="join-item btn btn-success">Page {{ posts.number }}</button>
     
           {% if posts.has_next %}
           <a href="?page={{ posts.next_page_number }}" class="join-item btn">Page {{ posts.next_page_number }}</a>

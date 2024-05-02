@@ -17,7 +17,7 @@
       </a>
         <div class="card-actions justify-end">
           <button id="like_{{post.id}}" onclick='like({{post.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-thumbs-up {%if user in post.like.all %}text-red-500{%else%}text-white{%endif%}"></i>{{ post.like.count }}</button>
-          <button id="dislike_{{post.id}}" onclick='dislike({{post.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-thumbs-down {%if user in post.dislike.all %}text-black{%else%}text-white{%endif%}"></i>{{ post.dislike.count }}</button>
+          <button id="dislike_{{post.id}}" onclick='dislike({{post.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-thumbs-down {%if user in post.dislike.all %}text-gray-500{%else%}text-white{%endif%}"></i>{{ post.dislike.count }}</button>
         </div>
       </div>
     </a>
@@ -25,7 +25,7 @@
     {% if is_control %}
       <div class="my-4 border-gray-200 p-4">
           <!-- <a onclick="my_modal_4.showModal()" class="btn btn-secondary">Редагувати</a> -->
-          <a onclick="delete_post_{{post.id}}.showModal()" class="btn btn-warning">Delete</a>
+          <a onclick="delete_post_{{post.id}}.showModal()" class="btn btn-error">Delete</a>
       </div>
 
     <!-- MODAL FOR ACCEPT DELETE -->

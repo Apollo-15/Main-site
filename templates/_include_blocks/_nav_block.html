@@ -1,18 +1,34 @@
 {% load static %}
 
 <div class="navbar bg-base-300">
+  <style>
+    .square-box {
+      border-radius: 0;
+    }
+    .squared-box {
+      borrder-border-40;
+    }
+    .avatar-up {
+      position: absolute;
+      top: -50px;
+    }
+    .catalog-up {
+      margin-top: -50px;
+    }
+  </style>
   <div class="container mx-auto">
-      <div class="navbar-start">
-        <a class="btn btn-ghost btn-circle text-xl" href="{% url 'main:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
-            <img src="{% static 'logotip.png' %}" alt="Logo" width="70" height="70">
-          </a>
+    <div class="navbar bg-base-300">
+    <div class="navbar-start">
+      <a class="btn btn-ghost btn-circle text-xl" href="{% url 'main:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
+        <img src="{% static 'logotip.png' %}" alt="Logo" width="70" height="70">
+      </a>
       </div>
     </div>
     <div class="navbar-center flex">
       <ul class="menu menu-horizontal px-1">
         <div class="dropdown dropdown-hover">
-          <li><a href="{% url 'blog:index' %}"><i class="btn btn-outline btn-info btn-xs">Store</a></i></li>
-          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 rounded-box w-40">
+          <li><a href="{% url 'blog:index' %}"><i class="btn btn-info btn-xs btn-outline square-box w-15 padding: 0px">STORE</a></i></li>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 squared-box w-40">
             <li><a>Home</a></li>
             <li><a>Discovery Queue</a></li>
             <li><a>Wishlist</a></li>
@@ -23,8 +39,8 @@
           </ul>
         </div>
         <div class="dropdown dropdown-hover">
-          <li><a href="{% url 'blog:index' %}"><i class="btn btn-outline btn-info btn-xs">Community</a></i></li>
-          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 rounded-box w-25">
+          <li style="margin-right: 250px;"><a href="{% url 'blog:index' %}"><i class="btn btn-outline btn-info btn-xs square-box w-15">Community</a></i></li>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 square-box w-25">
             <li><a>Home</a></li>
             <li><a>Discussion</a></li>
             <li><a>Workshop</a></li>
@@ -32,9 +48,10 @@
             <li><a>Broadcasts</a></li>
           </ul>
         </div>
+        {% if user.is_authenticated%}
         <div class="dropdown dropdown-hover">
-          <li><a href="{% url 'catalog:index' %}"><i class="btn btn-outline btn-info btn-xs">{{ user.username }}</a></i></li>
-          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 rounded-box w-25">
+          <li><a href="{% url 'catalog:index' %}"><i class="btn btn-outline btn-info btn-xs square-box w-15">{{ user.username }}</a></i></li>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 square-box w-90">
             <li><a>Activity</a></li>
             <li><a>Profile</a></li>
             <li><a>Friends</a></li>
@@ -45,59 +62,67 @@
             <li><a>Inventory</a></li>
           </ul>
         </div>
+        {% endif %}
       </ul>
     </div>
-    <div class="navbar-end flex">
-      
+    {% if user.is_authenticated %}
+    <!-- notification icon-->
 
-      {% if user.is_authenticated %}
-      <!-- notification icon-->
-     
-        
-      
-      <div class="dropdown dropdown-end">
-          <div class="indicator">
-        <div tabindex="1" role="button" class="btn btn-ghost bg-gray-700  btn-square">
+    <div class="dropdown dropdown-end">
+      <div class="indicator">
+        <div tabindex="1" role="button" class="btn btn-ghost bg-gray-700  btn-square btn-xs square-box" style="position: relative; top: -40px; margin-right: 5px; display: inline-block; padding: 5px;">
           <i class="fas fa-bell"></i>
-        </div>
       </div>
-        <ul tabindex="1" class="mt-6 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-300 w-80">
-          <span class="p-2 text-sm text-white">Notifications</span>
-          <hr class="my-2 border-bg-gray-700 ">
-          {% if user.notifications.all.count == 0 %}
-              <span class="p-2 text-gray-500">No notifications</span>
-          {% endif %}
+    </div>
+      <ul tabindex="1" class="mt-6 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-300 w-80">
+        <span class="p-2 text-sm text-white">Notifications</span>
+        <hr class="my-2 border-bg-gray-700 ">
+        {% if user.notifications.all.count == 0 %}
+            <span class="p-2 text-gray-500">No notifications</span>
+        {% endif %}
+    
+          {% for notification in user.notifications.all|slice:"0:10" %}
+            <li class="{% if not notification.is_read %}bg-bg-gray-700{% endif %} rounded-box mb-2">
+              <a class="justify-between p-2" href="{% url 'members:notification' notification.id %}">
+               
+                <span>
+                  <i class="fas fa-{{ notification.get_icon }}"></i>
+                  
+                  {{ notification.message }} </span>
+                {% if not notification.is_read %}
+                  <span class="badge">New</span>
+                {% endif %}
+              </a>
+            </li>
+          {% endfor %}
+          
+      </ul>
+    </div>
+    <!-- cart-->
+    {% comment %} <a href="{% url 'order:cart' %}" class="btn btn-ghost btn-square">
+      <i class="fas fa-shopping-cart"></i>
+    </a> {% endcomment %}
+    
+    <!-- name near avatar -->
 
-            {% for notification in user.notifications.all|slice:"0:10" %}
-              <li class="{% if not notification.is_read %}bg-bg-gray-700{% endif %} rounded-box mb-2">
-                <a class="justify-between p-2" href="{% url 'members:notification' notification.id %}">
-                 
-                  <span>
-                    <i class="fas fa-{{ notification.get_icon }}"></i>
-                    
-                    {{ notification.message }} </span>
-                  {% if not notification.is_read %}
-                    <span class="badge">New</span>
-                  {% endif %}
-                </a>
-              </li>
-            {% endfor %}
-        </ul>
-      </div>
-      <!-- cart-->
-      <a href="{% url 'order:cart' %}" class="btn btn-ghost btn-circle">
-        <i class="fas fa-shopping-cart"></i>
-      </a>
+    <details class="dropdown">
+      <summary class="m-1 btn btn-xs square-box" style="position: relative; top: -40px; margin-right: 0px; display: inline-block; padding: 10px;">{{ user.username }} ▽</summary>
+      <ul class="p-2 shadow menu dropdown-content z-[1]  square-box w-15 name-text">
+        <li><a>Item 1</a></li>
+        <li><a>Item 2</a></li>
+      </ul>
+    </details>
 
 
-      
-      <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <img alt="avatar" src="{{ user.profile.get_avatar }}" />
+    <!-- avatar-->
+    
+      {% comment %} <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square avatar-up"><b>
+          <div class="w-8 rounded">
+            <img alt="avatar" src=" {{ user.profile.get_avatar }}" />
           </div>
         </div>
-        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52">
+        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 squared-box w-40">
           <span class="p-2 text-sm text-bg-gray-700 ">Hello, <b>{{ user.username }}</b></span>
           <hr class="my-2 border-bg-gray-500">
           <li>
@@ -112,7 +137,19 @@
       {% else %}
         <a href="{% url 'members:login' %}" class="btn btn-ghost">Login</a>
         <a href="{% url 'members:signup' %}" class="btn btn-ghost">Signup</a>
-      {% endif %}
-    </div>
-    </div>
+      {% endif %} {% endcomment %}
+      <div class="dropdown dropdown-end">
+        <a href="{% url 'members:profile' user.profile.id %}">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-square avatar-up">
+            <div class="w-10 square-box">
+              <img alt="avatar" src="{{ user.profile.get_avatar }}" />
+            </div>
+          </div>
+        </a>
+        {% else %}
+          <a href="{% url 'members:login' %}" class="btn btn-ghost">Login</a>
+          <a href="{% url 'members:signup' %}" class="btn btn-ghost">Signup</a>
+        {% endif %}
   </div>
+</div>
+</div>
