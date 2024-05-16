@@ -19,59 +19,39 @@
   <div class="container mx-auto">
     <div class="navbar bg-base-300">
     <div class="navbar-start">
-      <a class="btn btn-ghost btn-circle text-xl" href="{% url 'main:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
+      <a class="btn btn-ghost btn-circle btn-outline text-xl" href="{% url 'main:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
         <img src="{% static 'logotip.png' %}" alt="Logo" width="70" height="70">
       </a>
-      </div>
     </div>
     <div class="navbar-center flex">
       <ul class="menu menu-horizontal px-1">
         <div class="dropdown dropdown-hover">
-          <li><a href="{% url 'blog:index' %}"><i class="btn btn-info btn-xs btn-outline square-box w-15 padding: 0px">STORE</a></i></li>
+          <li><a><i class="btn btn-info btn-xs btn-outline square-box w-15 padding: 0px">STORE</a></i></li>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 squared-box w-40">
-            <li><a>Home</a></li>
-            <li><a>Discovery Queue</a></li>
+            <li><a href="{% url 'catalog:index' %}">Store</a></li>
             <li><a>Wishlist</a></li>
-            <li><a>Points Shop</a></li>
             <li><a>News</a></li>
-            <li><a>Stats</a></li>
-            <li><a>About</a></li>
           </ul>
         </div>
         <div class="dropdown dropdown-hover">
-          <li style="margin-right: 250px;"><a href="{% url 'blog:index' %}"><i class="btn btn-outline btn-info btn-xs square-box w-15">Community</a></i></li>
+          <li style=""><a href=""><i class="btn btn-outline btn-info btn-xs square-box w-15">Community</a></i></li>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 square-box w-25">
-            <li><a>Home</a></li>
-            <li><a>Discussion</a></li>
-            <li><a>Workshop</a></li>
-            <li><a>Market</a></li>
-            <li><a>Broadcasts</a></li>
+            <li><a href="{% url 'blog:index' %}">Home</a></li>
+            <li><a href="{% url 'discussion:index' %}">Discussion/</a></li>
           </ul>
         </div>
-        {% if user.is_authenticated%}
-        <div class="dropdown dropdown-hover">
-          <li><a href="{% url 'catalog:index' %}"><i class="btn btn-outline btn-info btn-xs square-box w-15">{{ user.username }}</a></i></li>
-          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 square-box w-90">
-            <li><a>Activity</a></li>
-            <li><a>Profile</a></li>
-            <li><a>Friends</a></li>
-            <li><a>Games</a></li>
-            <li><a>Groups</a></li>
-            <li><a>Content</a></li>
-            <li><a>Badges</a></li>
-            <li><a>Inventory</a></li>
-          </ul>
-        </div>
-        {% endif %}
+    </div>
       </ul>
     </div>
     {% if user.is_authenticated %}
     <!-- notification icon-->
-
+   
+      
+    
     <div class="dropdown dropdown-end">
-      <div class="indicator">
-        <div tabindex="1" role="button" class="btn btn-ghost bg-gray-700  btn-square btn-xs square-box" style="position: relative; top: -40px; margin-right: 5px; display: inline-block; padding: 5px;">
-          <i class="fas fa-bell"></i>
+        <div class="indicator">
+      <div tabindex="1" role="button" class="btn btn-ghost bg-gray-700  btn-square btn-outline">
+        <i class="fas fa-bell"></i>
       </div>
     </div>
       <ul tabindex="1" class="mt-6 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-300 w-80">
@@ -80,7 +60,7 @@
         {% if user.notifications.all.count == 0 %}
             <span class="p-2 text-gray-500">No notifications</span>
         {% endif %}
-    
+
           {% for notification in user.notifications.all|slice:"0:10" %}
             <li class="{% if not notification.is_read %}bg-bg-gray-700{% endif %} rounded-box mb-2">
               <a class="justify-between p-2" href="{% url 'members:notification' notification.id %}">
@@ -95,61 +75,37 @@
               </a>
             </li>
           {% endfor %}
-          
       </ul>
     </div>
     <!-- cart-->
-    {% comment %} <a href="{% url 'order:cart' %}" class="btn btn-ghost btn-square">
+    <a href="{% url 'order:cart' %}" class="btn btn-ghost btn-circle">
       <i class="fas fa-shopping-cart"></i>
-    </a> {% endcomment %}
+    </a>
+
+
     
-    <!-- name near avatar -->
-
-    <details class="dropdown">
-      <summary class="m-1 btn btn-xs square-box" style="position: relative; top: -40px; margin-right: 0px; display: inline-block; padding: 10px;">{{ user.username }} ▽</summary>
-      <ul class="p-2 shadow menu dropdown-content z-[1]  square-box w-15 name-text">
-        <li><a>Item 1</a></li>
-        <li><a>Item 2</a></li>
-      </ul>
-    </details>
-
-
-    <!-- avatar-->
-    
-      {% comment %} <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-square avatar-up"><b>
-          <div class="w-8 rounded">
-            <img alt="avatar" src=" {{ user.profile.get_avatar }}" />
-          </div>
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full">
+          <img alt="avatar" src="{{ user.profile.get_avatar }}" />
         </div>
-        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 squared-box w-40">
-          <span class="p-2 text-sm text-bg-gray-700 ">Hello, <b>{{ user.username }}</b></span>
-          <hr class="my-2 border-bg-gray-500">
-          <li>
-            <a class="justify-between" href="{% url 'members:profile' user.profile.id %}">
-              <span> <i class="fas fa-user"></i> Profile </span>
-              <span class="badge">New</span>
-            </a>
-          </li>
-          <li><a href="{% url 'members:logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-        </ul>
       </div>
-      {% else %}
-        <a href="{% url 'members:login' %}" class="btn btn-ghost">Login</a>
-        <a href="{% url 'members:signup' %}" class="btn btn-ghost">Signup</a>
-      {% endif %} {% endcomment %}
-      <div class="dropdown dropdown-end">
-        <a href="{% url 'members:profile' user.profile.id %}">
-          <div tabindex="0" role="button" class="btn btn-ghost btn-square avatar-up">
-            <div class="w-10 square-box">
-              <img alt="avatar" src="{{ user.profile.get_avatar }}" />
-            </div>
-          </div>
-        </a>
-        {% else %}
-          <a href="{% url 'members:login' %}" class="btn btn-ghost">Login</a>
-          <a href="{% url 'members:signup' %}" class="btn btn-ghost">Signup</a>
-        {% endif %}
+      <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52">
+        <span class="p-2 text-sm text-bg-gray-700 ">Hello, <b>{{ user.username }}</b></span>
+        <hr class="my-2 border-bg-gray-500">
+        <li>
+          <a class="justify-between" href="{% url 'members:profile' user.profile.id %}">
+            <span> <i class="fas fa-user"></i> Profile </span>
+            <span class="badge">New</span>
+          </a>
+        </li>
+        <li><a href="{% url 'members:logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+      </ul>
+    </div>
+    {% else %}
+      <a href="{% url 'members:login' %}" class="btn btn-ghost">Login</a>
+      <a href="{% url 'members:signup' %}" class="btn btn-ghost">Signup</a>
+    {% endif %}
   </div>
 </div>
 </div>

@@ -3,6 +3,7 @@
 {% block title %}Catalog{% endblock %}
 
 {% block content %}
+<div class="my-4 rounded-lg p-9 " style="background-color: rgba(0, 0, 0, 0.7);">
     <h1 class="text-3xl font-bold">{{category.title}}</h1>
     <div class="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-8 gap-4 mt-4">
         {% for catalog in object_list %}
@@ -37,5 +38,5 @@
             {% endfor %}
         </div>
     </div>
-
+</div>
 {% endblock %}

@@ -59,9 +59,9 @@
         </div>
         {% else %}
           {% if is_following %}
-            <a href="{% url 'members:follow'  profile.id %}" class="btn btn-accent">Unfollow</a>
+            <a href="{% url 'members:follow'  profile.id %}" class="btn btn-accent btn-outline">Unfollow</a>
           {% else %}
-            <a href="{% url 'members:follow'  profile.id %}" class="btn btn-primary">Follow</a>
+            <a href="{% url 'members:follow'  profile.id %}" class="btn btn-info btn-outline">Follow</a>
           {% endif %}
         {% endif %}
         <div class="mt-4">
@@ -127,7 +127,7 @@
           <a href="?page={{ posts.previous_page_number }}" class="join-item btn">Page {{ posts.previous_page_number }}</a>
           {% endif %}
     
-          <button class="join-item btn btn-success">Page {{ posts.number }}</button>
+          <button class="join-item btn btn-success btn-outline">Page {{ posts.number }}</button>
     
           {% if posts.has_next %}
           <a href="?page={{ posts.next_page_number }}" class="join-item btn">Page {{ posts.next_page_number }}</a>
@@ -142,7 +142,7 @@
     <dialog id="my_modal_4" class="modal">
         <div class="modal-box w-11/12 max-w-5xl">
           <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button class="btn btn-sm btn-circle btn-ghost btn-outline absolute right-2 top-2">✕</button>
           </form>
           <h3 class="font-bold text-lg mb-4">Create Post</h3>
           <form action="{% url 'blog:create' %}" method="post" enctype="multipart/form-data">
@@ -162,7 +162,7 @@
                 {% endif %}
               </div>
             {% endfor %}
-            <button class="btn btn-primary">Create</button>
+            <button class="btn btn-info btn-outline">Create</button>
           </div>
             
           </form>
