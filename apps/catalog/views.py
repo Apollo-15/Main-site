@@ -5,9 +5,13 @@ from django.views.generic import ListView, DetailView
 #Q search
 from django.db.models import Q
 from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from apps.main.mixins import ListViewBreadCrumbMixin, DetailViewBreadCrumbMixin
 
-from .models import Category, Product
+from .models import Category, Product, Comment
+from .forms import CommentForm
 # Create your views here.
 
 class CatalogListView(ListView):
@@ -98,4 +102,19 @@ class ProductDetailView(DetailViewBreadCrumbMixin):
             self.breadcrumbs[reverse("catalog:product_by_category", kwargs={"slug": category.slug})] = category.title
         self.breadcrumbs["current"] = self.object.title
         return self.breadcrumbs
-                
+    
+@login_required
+def product_review(request, product_id):
+    if request.method == 'POST':
+        post = get_object_or_404(Product, pk=product_id)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment.objects.create(
+                post=post,
+                author=request.user,
+                content=form.cleaned_data['content']
+            )
+            messages.success(request, 'Comment created successfully')
+        else:
+            messages.error(request, 'Error creating comment')
+    return redirect('catalog:product_detail', slug=post.slug)

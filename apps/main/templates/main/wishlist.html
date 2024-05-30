@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Cart{% endblock %}
+{% block title %}Wishlist{% endblock %}
 
 
 
 {% block content %}
 <div class="my-4 rounded-lg p-9 " style="background-color: rgba(0, 0, 0, 0.7);">
     <div class="my-4 rounded-lg bg-base-300 p-9 ">
-        <h1 class = "text-3xl font-bold mb-4">Cart</h1>
+        <h1 class = "text-3xl font-bold mb-4">Wishlist</h1>
         <table class="table w-full">
             <thead>
                 <tr>
@@ -20,8 +20,8 @@
                 </tr>
             </thead>
             <tbody>
-                {% if cart %}
-                    {% for item in cart %}
+                {% if wishlist %}
+                    {% for item in wishlist%}
                     <tr class="hover:bg-base-100 transition-colors duration-200 ease-in-out ">
                         
                         <td>
@@ -39,7 +39,7 @@
                         </td>
                           
                         <td>
-                            <form action="{% url 'order:cart_add' %}" method="post">
+                            <form action="{% url 'main:wishlist_add' %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="product" value="{{ item.product.id }}">
                                 <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10" class="input input-bordered w-16" onchange="this.form.submit()">
@@ -47,13 +47,13 @@
                         </td>
                         <td>{{ item.get_total }}</td>
                         <td>
-                            <a href="{% url 'order:cart_remove' item.id %}" class="btn ghost"><i class="fas fa-trash"></i></a>
+                            <a href="{% url 'main:wishlist_remove' item.id %}" class="btn ghost"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="5">Your cart is empty</td>
+                        <td colspan="5">Your wishlist is empty</td>
                     </tr>
                 {% endif %} 
             </tbody>
@@ -61,11 +61,7 @@
         </table>
         <div class="flex justify-between items-center mt-4">
             <p class="text-2xl font-bold">Total: {{ get_total_cost|floatformat:0 }} грн</p>
-            <a href="" class="btn btn-error btn-outline">Clear cart</a>
-           
-        </div>
-        <a href="" class="btn btn-success btn-outline mt-4">Create order</a>
+     </div>
     </div>
 </div>
 {% endblock %}
-

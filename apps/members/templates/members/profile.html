@@ -39,76 +39,74 @@
       float: right;
     }
   </style>
-    <div class="bg-base-200 p-10 square-box ">
+    <div class="bg-base-200 p-10 square-box"  style="background-color: rgba(0, 0, 0, 0.0);">
       <div class="flex items-center gap-4 mb-4">
         <img src="{{ profile.get_avatar }}" alt="avatar" width="100px">
         <p class="text-white text-large">{{ profile.user.username }}</p>
       </div>
       <div class="mt-4">
-          {% comment %} <h2 class="text-2xl font-bold mb-4">Description</h2> {% endcomment %}
           <p class="text-gray-500 mb-4">{{ profile.bio|safe }}</p>
       </div>
         {% comment %} <p class="text-gray-500 mb-4">Email: {{ profile.user.email }}</p> {% endcomment %}
-        {% if is_owner %}
         {% comment %} <a href="{% url 'members:logout' %}" class="btn btn-error btn-outline">Logout</a> {% endcomment %}
+        {% if is_owner %}
         <div class="bg-base-00 p-10 rounded-box ">
           <div class="btn-right gap-4 mb-4">
-            <p class="text-gray-500 text-small">You can feature one of your Badges here. Select one from your edit profile page.</p>
-            <a href="{% url 'members:profile_edit' %}" class="btn btn-info btn-outline btn-right">Edit Profile</a>
+            <p class="text-gray-500 text-small">You can Edit your profile here.</p>
+            <a href="{% url 'members:profile_edit' %}" class="btn btn-info btn-outline btn-right btn-xs">Edit Profile</a>
             </div>
         </div>
+        <hr>
         {% else %}
           {% if is_following %}
             <a href="{% url 'members:follow'  profile.id %}" class="btn btn-accent btn-outline">Unfollow</a>
+            <a href="{% url 'members:chat' profile.user.id %}" class="btn btn-info btn-outline">Chat</a>
           {% else %}
             <a href="{% url 'members:follow'  profile.id %}" class="btn btn-info btn-outline">Follow</a>
+            <a href="{% url 'members:chat' profile.user.id %}" class="btn btn-info btn-outline">Chat</a>
           {% endif %}
         {% endif %}
-        <div class="mt-4">
-            <h2 class="text-2xl font-bold mb-4">Followers</h2>
-
+        <div class="flex mt-4">
+          <div class="bg-base-200 p-10 rounded-box flex-1 mr-2">
+              <h2 class="text-3xl font-bold mb-4">Followers</h2>
               <div class="flex items-center space-x-4">
-                {% if followers.count == 0 %}
-                  <span class="text-gray-500">No followers</span>
-                {% endif %}
-                {% for follower in followers %}
-                  {% if forloop.counter <= 3 %}
-                      <a href="{% url 'members:profile' follower.id %}">
-                      <img src="{{ follower.get_avatar }}" alt="avatar" class="h-10 w-10 rounded-full ring-2 ring-white">
-                      </a>
+                  {% if followers.count == 0 %}
+                      <span class="text-gray-500">No followers</span>
                   {% endif %}
-
-                {% endfor %}
-                {% if followers.count > 3 %}
-                 <span class="text-gray-500">and {{ followers.count|add:"-3" }} more</span>
-                {% endif %}
-            </div>
+                  {% for follower in followers %}
+                      {% if forloop.counter <= 3 %}
+                          <a href="{% url 'members:profile' follower.id %}">
+                              <img src="{{ follower.get_avatar }}" alt="avatar" class="h-10 w-10 rounded-full ring-2 ring-white">
+                          </a>
+                      {% endif %}
+                  {% endfor %}
+                  {% if followers.count > 3 %}
+                      <span class="text-gray-500">and {{ followers.count|add:"-3" }} more</span>
+                  {% endif %}
+              </div>
           </div>
 
-          <div class="bg-base-200 p-10 rounded-box mt-4">
-            <h1 class="text-3xl font-bold mb-4">Followers</h1>
-            <div class="flex items-center space-x-4">
-              {% if following.count == 0 %}
-                <span class="text-gray-500">No following</span>
-              {% endif %}
-
-              {% for follower in following %}
-                {% if forloop.counter <= 3 %}
-                  <a href="{% url 'members:profile' follower.id %}">
-                    <img src="{{ follower.get_avatar }}" alt="avatar" class="h-10 w-10 rounded-full ring-2 ring-white">
-                  </a>
-                {% endif %}
-
-              {% endfor %}
-              {% if following.count > 3 %}
-                <span class="text-gray-500">and {{ following.count|add:"-3" }} more</span>
-              {% endif %}
-            </div>
-          </div>  
-            
-        </div>
+          <div class="bg-base-200 p-10 rounded-box flex-1 mr-2">
+              <h1 class="text-3xl font-bold mb-4">Friends</h1>
+              <div class="flex items-center space-x-4">
+                  {% if friends.count == 0 %}
+                      <span class="text-gray-500">No friends</span>
+                  {% endif %}
+                  {% for friend in friends %}
+                      {% if forloop.counter <= 3 %}
+                          <a href="{% url 'members:profile' friend.id %}">
+                              <img src="{{ friend.get_avatar }}" alt="avatar" class="h-10 w-10 rounded-full ring-2 ring-white">
+                          </a>
+                      {% endif %}
+                  {% endfor %}
+                  {% if friends.count > 3 %}
+                      <span class="text-gray-500">and {{ friends.count|add:"-3" }} more</span>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
     </div>
-    <div class=" bg-base-200 p-10 rounded-box">
+    <div class=" bg-base-200 p-10 rounded-box" >
         <h1 class="text-3xl font-bold mb-4">Posts</h1>
         {% if is_owner %}
         <a onclick="my_modal_4.showModal()" class="btn btn-outline btn-info">Create Post</a>
@@ -136,7 +134,6 @@
           {% endif %}
         </div>
     </div>
-
 
 {% if is_owner %}
     <dialog id="my_modal_4" class="modal">
@@ -169,6 +166,9 @@
         </div>
       </dialog>
 {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 

@@ -4,6 +4,8 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django.contrib.admin import display
 
+from django.contrib.auth.models import User
+
 from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFit, ResizeToFill, ResizeToCover
 
@@ -166,3 +168,16 @@ class Image(models.Model):
     def image_tag(self):
         if self.image:
             return mark_safe(f'<img src="{self.image.url}" height="100" />')
+
+class Comment(models.Model):
+    post = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_comments')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return self.content

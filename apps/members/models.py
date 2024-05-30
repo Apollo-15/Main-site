@@ -7,6 +7,8 @@ from imagekit.processors import ResizeToFill, SmartCrop
 
 # urls reverse
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.utils import timezone
 
 from ckeditor.fields import RichTextField
 
@@ -26,6 +28,9 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+    def is_friends_with(self, profile):
+        return self.is_following(profile) and profile.is_following(self)
     
     def follow(self, profile):
         self.followers.add(profile)
@@ -105,6 +110,12 @@ class Notification(models.Model):
     def read(self):
         self.is_read = True
         self.save()
-        
-        
-    
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.message

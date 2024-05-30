@@ -19,7 +19,7 @@
   <div class="container mx-auto">
     <div class="navbar bg-base-300">
     <div class="navbar-start">
-      <a class="btn btn-ghost btn-circle btn-outline text-xl" href="{% url 'main:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
+      <a class="btn btn-ghost btn-circle btn-outline text-xl" href="{% url 'catalog:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
         <img src="{% static 'logotip.png' %}" alt="Logo" width="70" height="70">
       </a>
     </div>
@@ -29,7 +29,7 @@
           <li><a><i class="btn btn-info btn-xs btn-outline square-box w-15 padding: 0px">STORE</a></i></li>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 squared-box w-40">
             <li><a href="{% url 'catalog:index' %}">Store</a></li>
-            <li><a>Wishlist</a></li>
+            <li><a href="{%url 'main:wishlist'%}">Wishlist</a></li>
             <li><a>News</a></li>
           </ul>
         </div>
@@ -37,7 +37,6 @@
           <li style=""><a href=""><i class="btn btn-outline btn-info btn-xs square-box w-15">Community</a></i></li>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 square-box w-25">
             <li><a href="{% url 'blog:index' %}">Home</a></li>
-            <li><a href="{% url 'discussion:index' %}">Discussion/</a></li>
           </ul>
         </div>
     </div>
@@ -50,7 +49,7 @@
     
     <div class="dropdown dropdown-end">
         <div class="indicator">
-      <div tabindex="1" role="button" class="btn btn-ghost bg-gray-700  btn-square btn-outline">
+      <div tabindex="1" role="button" class="btn btn-ghost bg-gray-700 btn-square btn-xs">
         <i class="fas fa-bell"></i>
       </div>
     </div>

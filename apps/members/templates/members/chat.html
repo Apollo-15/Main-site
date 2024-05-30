@@ -1,0 +1,17 @@
+{% for message in messages %}
+    <div class="{% if message.sender == user %}chat chat-end{% else %}chat chat-start{% endif %}">
+        <div class="chat-image avatar">
+            <img src="{{ message.sender.profile.get_avatar }}" alt="avatar" class="w-10 rounded-full" />
+        </div>
+        <div class="chat-header">
+            {{ message.sender.username }}
+            <time class="text-xs opacity-50">{{ message.timestamp|date:"H:i" }}</time>
+        </div>
+        <div class="chat-bubble">{{ message.message }}</div>
+    </div>
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+    <textarea name="message" placeholder="Type a message..."></textarea>
+    <button type="submit">Send</button>
+</form>

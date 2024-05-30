@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import chat_view
 
 app_name = 'members'
 
@@ -14,4 +15,5 @@ urlpatterns = [
     path('follow/<int:pk>/', views.follow_view, name='follow'),
     
     path('notifications/<uuid:pk>/', views.notification_view, name='notification'),
+    path('chat/<int:user_id>/', chat_view, name='chat'),
 ]
