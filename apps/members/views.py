@@ -7,8 +7,6 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 
-
-from .models import Message
 from .models import Profile, Notification
 from .forms import ProfileForm
 
@@ -113,15 +111,3 @@ def notification_view(request, pk):
     notification.is_read = True
     notification.save()
     return redirect(notification.url)
-
-@login_required
-def chat_view(request, user_id):
-    user = request.user
-    other_user = User.objects.get(id=user_id)
-    if request.method == 'POST':
-        message = request.POST.get('message')
-        if message:
-            Message.objects.create(sender=user, receiver=other_user, message=message)
-            return redirect('chat', user_id=other_user.id)
-    messages = Message.objects.filter(sender=user, receiver=other_user) | Message.objects.filter(sender=other_user, receiver=user)
-    return render(request, 'chat.html', {'messages': messages})

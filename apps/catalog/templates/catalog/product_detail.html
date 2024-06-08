@@ -21,6 +21,9 @@
         </div>
         <div>
             <h1 class="text-2xl font-bold">{{ product.title }}</h1>
+            <hr>
+            <h1 class="text-2xl text-xs" > Add to site: {{ product.created_at }}</h1>
+            <h1 class="text-2xl text-xs" > Updated: {{ product.updated_at }}</h1>
             <div class="flex justify-between items-center my-4 bg-base-300 p-4 rounded-lg">
                 <p class="text-2xl font-bold">{{ product.price }} грн</p>
                 {% if user.is_authenticated %}
@@ -42,6 +45,7 @@
                 {% endif %}
             </div>
             <p>{{ product.description|safe }}</p>
+            <hr>
         </div>
         <hr>
         <h3 class="text-2xl font-bold mb-4">Comments</h3>

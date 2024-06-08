@@ -1,18 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}Головна{% endblock %}
-
+{% block title %}Main{% endblock %}
 
 {% block content %}
 
-
-<div class="my-4 rounded-lg p-9 " style="background-color: rgba(0, 0, 0, 0.7);">
-
+<div class="my-4 rounded-lg p-9" style="background-color: rgba(0, 0, 0, 0.7);">
   <div class="card-body">
-    <h2 class="card-title">New album is released!</h2>
-    <p>Click the button to listen on Spotiwhy app.</p>
+    <h2 class="card-title">About Us</h2>
+    <hr>
+    <p>Welcome to Games Store, where every gamer finds something for themselves.</p>
+    <p>We offer not just games - we offer a diverse selection of worlds, full of adventure, mystery, and unforgettable experiences.</p>
+    <p>Our selection includes a vast array of games for various platforms.</p>
+    <p>From exclusive indie games to AAA blockbusters - we have a wide variety to satisfy any taste and budget.</p>
+    <p>Our Profile System allows you to save games in the cloud, track achievements, and share them with friends.</p>
+    <p>Your profile is your gaming history that you can showcase to the world.</p>
+    <p>Our New Releases System is updated daily so you're always in the loop with the latest gaming industry news.</p>
+    <p>Don't miss the chance to be the first to know about upcoming releases and exclusive promotions.</p>
+    <p>And there's more:</p>
+    <ul>
+      <li><strong>Special Discounts:</strong> We value our customers and regularly offer discounts and special deals.</li>
+      <li><strong>Customer Support:</strong> Our support team are top-notch professionals, always ready to assist you.</li>
+      <li><strong>Secure Payments:</strong> Your safety is our priority. We guarantee the protection of your payments and personal data.</li>
+      <li><strong>Community:</strong> Join our community, participate in discussions, tournaments, and events.</li>
+    </ul>
+    <p>We're here to make your stay in the gaming world as comfortable and exciting as possible. Join Games Store and discover new horizons of gaming experience!</p>
     <div class="card-actions justify-end">
-      <button class="btn btn-primary">Listen</button>
+      <a class="btn btn-info btn-outline " href="{%url 'catalog:index' %}">Go to Catalog</a>
     </div>
   </div>
 </div>

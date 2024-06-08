@@ -43,12 +43,15 @@
       <div class="flex items-center gap-4 mb-4">
         <img src="{{ profile.get_avatar }}" alt="avatar" width="100px">
         <p class="text-white text-large">{{ profile.user.username }}</p>
+        {% if profile.user.is_staff %}
+          <p class="badge badge-error badge-outline">Admin</p>
+        {% else %}
+          <p class="badge badge-info badge-outline">User</p>
+        {% endif %}
       </div>
       <div class="mt-4">
           <p class="text-gray-500 mb-4">{{ profile.bio|safe }}</p>
       </div>
-        {% comment %} <p class="text-gray-500 mb-4">Email: {{ profile.user.email }}</p> {% endcomment %}
-        {% comment %} <a href="{% url 'members:logout' %}" class="btn btn-error btn-outline">Logout</a> {% endcomment %}
         {% if is_owner %}
         <div class="bg-base-00 p-10 rounded-box ">
           <div class="btn-right gap-4 mb-4">
@@ -60,10 +63,8 @@
         {% else %}
           {% if is_following %}
             <a href="{% url 'members:follow'  profile.id %}" class="btn btn-accent btn-outline">Unfollow</a>
-            <a href="{% url 'members:chat' profile.user.id %}" class="btn btn-info btn-outline">Chat</a>
           {% else %}
             <a href="{% url 'members:follow'  profile.id %}" class="btn btn-info btn-outline">Follow</a>
-            <a href="{% url 'members:chat' profile.user.id %}" class="btn btn-info btn-outline">Chat</a>
           {% endif %}
         {% endif %}
         <div class="flex mt-4">

@@ -19,7 +19,7 @@
   <div class="container mx-auto">
     <div class="navbar bg-base-300">
     <div class="navbar-start">
-      <a class="btn btn-ghost btn-circle btn-outline text-xl" href="{% url 'catalog:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
+      <a class="btn btn-ghost btn-circle btn-outline text-xl" href="{% url 'main:index' %}" style="width: 70px; height: 70px; padding: 0; display: flex; justify-content: center; align-items: center;">
         <img src="{% static 'logotip.png' %}" alt="Logo" width="70" height="70">
       </a>
     </div>
@@ -28,9 +28,9 @@
         <div class="dropdown dropdown-hover">
           <li><a><i class="btn btn-info btn-xs btn-outline square-box w-15 padding: 0px">STORE</a></i></li>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-gray-700 squared-box w-40">
-            <li><a href="{% url 'catalog:index' %}">Store</a></li>
+            <li><a href="{%url 'catalog:index' %}">Store</a></li>
             <li><a href="{%url 'main:wishlist'%}">Wishlist</a></li>
-            <li><a>News</a></li>
+            <li><a href="{%url 'catalog:product_news'%}">News</a></li>
           </ul>
         </div>
         <div class="dropdown dropdown-hover">

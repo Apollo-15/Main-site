@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from apps.main.mixins import ListViewBreadCrumbMixin, DetailViewBreadCrumbMixin
+from django.utils import timezone
+from datetime import timedelta
 
 from .models import Category, Product, Comment
 from .forms import CommentForm
@@ -102,7 +104,19 @@ class ProductDetailView(DetailViewBreadCrumbMixin):
             self.breadcrumbs[reverse("catalog:product_by_category", kwargs={"slug": category.slug})] = category.title
         self.breadcrumbs["current"] = self.object.title
         return self.breadcrumbs
+
+class ProductNewsView(ListView):
+    model = Product
+    template_name = 'catalog/product_news.html'
+    context_object_name = 'recent_products'
     
+    def get_queryset(self):
+        twenty_four_hours_ago = timezone.now() - timedelta(days=1)
+        return Product.objects.filter(
+            Q(created_at__gte=twenty_four_hours_ago) | 
+            Q(updated_at__gte=twenty_four_hours_ago)
+        ).distinct()
+
 @login_required
 def product_review(request, product_id):
     if request.method == 'POST':

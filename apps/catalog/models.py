@@ -67,7 +67,7 @@ class Product(models.Model):
     category = models.ManyToManyField(
         to = Category,
         related_name = 'products',
-        through='ProductCategory', # це модель проміжного зв'язку
+        through='ProductCategory',
         verbose_name = 'Категорії',
         blank=True,
     )
